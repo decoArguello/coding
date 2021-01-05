@@ -19,13 +19,34 @@ isFruitVisible = False
 fruit_x = -1
 fruit_y = 0
 fruitTimer = 0
-fruitTimer = 0
+fruitTimer2 = 0
 
 # pygame game window setup
 screen = pygame.display.set_mode(screenSize)
 pygame.display.set_caption("Snake")
 
 # game functions
+
+
+def reset():
+    global snake_head_x
+    global snake_head_y
+    global snake
+    global isFruitVisible
+    global fruit_x
+    global fruit_y
+    global fruitTimer
+    global fruitTimer2
+
+    snake_head_x = 400
+    snake_head_y = 300
+    snake = [[snake_head_x, snake_head_y]]
+    isFruitVisible = False
+    fruit_x = -1
+    fruit_y = 0
+    fruitTimer = 0
+    fruitTimer2 = 0
+
 # draw snake body
 
 
@@ -41,11 +62,20 @@ def drawFruit():
     if fruit_x == -1:
         fruit_y = random.randrange(0, 590, 10)
         fruit_x = random.randrange(0, 790, 10)
-
     pygame.draw.rect(screen, snakeColor, [fruit_x + 3, fruit_y + 0, 4, 4])
     pygame.draw.rect(screen, snakeColor, [fruit_x + 3, fruit_y + 6, 4, 4])
     pygame.draw.rect(screen, snakeColor, [fruit_x + 0, fruit_y + 3, 4, 4])
     pygame.draw.rect(screen, snakeColor, [fruit_x + 6, fruit_y + 3, 4, 4])
+
+# validate if exists collision
+
+
+def validateCollision():
+    if len(snake) > 1:
+        for i in range(1, len(snake)-1):
+            if snake[0][0] == snake[i][0] and snake[0][1] == snake[i][1]:
+                return True
+    return False
 
 # draw all the pieces of the snake body
 
@@ -113,14 +143,16 @@ while running:
         if fruit_x == snake[0][0] and fruit_y == snake[0][1]:
             snake.append([snake[len(snake)-1][0], snake[len(snake)-1][1]])
             isFruitVisible = False
-            print(len(snake))
-
+            fruit_x = -1
         if fruitTimer2 == 70:
             fruitTimer2 = 0
             isFruitVisible = False
             fruit_x = -1
         else:
             fruitTimer2 += 1
+
+    if validateCollision():
+        reset()
 
     pygame.time.wait(100)
     pygame.display.update()
