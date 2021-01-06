@@ -1,9 +1,15 @@
 import pygame
 import random
+from pathlib import Path
+
 # pygame initialing
 pygame.init()
 
 # game variables
+path = Path(__file__).parent
+font = pygame.font.Font(str(path.parent.resolve()) +
+                        '/fonts/Roboto-Regular.ttf', 12)
+
 running = True
 snakeColor = (41, 60, 15)
 backgroundColor = (132, 169, 3)
@@ -13,7 +19,8 @@ snake_head_x = 400
 snake_head_y = 300
 move_x = 10
 move_y = 0
-snake = [[snake_head_x, snake_head_y]]
+snake = [[snake_head_x, snake_head_y], [snake_head_x -
+                                        10, snake_head_y], [snake_head_x-20, snake_head_y]]
 
 isFruitVisible = False
 fruit_x = -1
@@ -21,6 +28,7 @@ fruit_y = 0
 fruitTimer = 0
 fruitTimer2 = 0
 
+score = 0
 # pygame game window setup
 screen = pygame.display.set_mode(screenSize)
 pygame.display.set_caption("Snake")
@@ -37,10 +45,13 @@ def reset():
     global fruit_y
     global fruitTimer
     global fruitTimer2
+    global score
 
+    score = 0
     snake_head_x = 400
     snake_head_y = 300
-    snake = [[snake_head_x, snake_head_y]]
+    snake = [[snake_head_x, snake_head_y], [snake_head_x -
+                                            10, snake_head_y], [snake_head_x-20, snake_head_y]]
     isFruitVisible = False
     fruit_x = -1
     fruit_y = 0
@@ -71,8 +82,9 @@ def drawFruit():
 
 
 def validateCollision():
+    global score
     if len(snake) > 1:
-        for i in range(1, len(snake)-1):
+        for i in range(2, len(snake)):
             if snake[0][0] == snake[i][0] and snake[0][1] == snake[i][1]:
                 return True
     return False
@@ -93,6 +105,10 @@ def drawSnake(x, y):
 
 # game loop
 while running:
+    text = font.render('Score: '+str(score), True, (0, 0, 0))
+    rect = text.get_rect()
+    rect.bottomleft = (20, 20)
+
     # event manager
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -112,6 +128,8 @@ while running:
                 move_y = 0
 
     screen.fill(backgroundColor)
+
+    screen.blit(text, rect)
 
     drawSnake(snake_head_x, snake_head_y)
 
@@ -144,6 +162,7 @@ while running:
             snake.append([snake[len(snake)-1][0], snake[len(snake)-1][1]])
             isFruitVisible = False
             fruit_x = -1
+            score += 1
         if fruitTimer2 == 70:
             fruitTimer2 = 0
             isFruitVisible = False
@@ -153,6 +172,7 @@ while running:
 
     if validateCollision():
         reset()
-
-    pygame.time.wait(100)
     pygame.display.update()
+    pygame.time.wait(100)
+
+pygame.quit()
