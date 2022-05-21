@@ -1,0 +1,72 @@
+/* color palette from <https://github.com/vuejs/theme> */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+:root {
+  --wordle-yellow: #C3AE56;
+  --wordle-green: #68A561;
+  --wordle-gray: #74787B;
+  --wordle-letter-bg: #d3d6da;
+  --color-background: #fff;
+  --color-transparent: transparent;
+}
+
+*,
+*::before,
+*::after {
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  position: relative;
+  font-weight: normal;
+}
+
+body {
+  color: var(--wordle-yellow);
+  background: var(--color-background);
+
+}
+main {  
+  min-height: 100vh;
+  min-width: 100vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+main .wordle .wordle-title{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #000;
+  font-weight: bold;
+}
+main .wordle {
+  position: relative;
+  width: 300px;
+  height: 400px;
+  display: grid;
+  grid-template-rows: repeat(6,1fr);
+  gap: 5px;
+}
+
+main .wordle .wordle-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+}
+
+main .wordle .wordle-row .wordle-letter {
+  background-color: var(--letter-color);
+  border: 2px solid var(--wordle-letter-bg);
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  cursor: auto;
+  pointer-events: none;
+}
+main .wordle .wordle-row .current-letter {
+  border: 3px solid #000;
+}
