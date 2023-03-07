@@ -12,9 +12,9 @@ class Cell:
         self.BOTTOM = 2
         self.RIGHT = 3
 
-    def set_visited (self, visited):
+    def set_visited (self, visited, color):
         self.visited = visited
-        self.color = (200,200,200)
+        self.color = color
 
     def remove_wall (self, wall_index):
         self.walls[wall_index] = False
